@@ -16,3 +16,6 @@ val=500000
 
 echo $val > /sys/class/pwm/pwmchip0/pwm0/duty_cycle
 
+# Add permisions for writing:
+chmod 666 /sys/class/pwm/pwmchip0/pwm0/duty_cycle
+
