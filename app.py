@@ -45,6 +45,7 @@ def turn_camera():
         f.close()
         return "error: invalid argument"
     f.write("{}".format(actual_position))
+    f.close()
     return "{}".format(actual_position)
 
 @app.route('/')
