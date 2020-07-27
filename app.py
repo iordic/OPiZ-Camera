@@ -1,10 +1,16 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import cv2
 
 app = Flask(__name__)
 
-camera = cv2.VideoCapture(0)  # use 0 for web camera
-#  for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
+# PWM stuff:
+INCREMENT = 20000
+MIN = 500000
+MAX = 2000000
+
+PWM_PATH = "/sys/class/pwm/pwmchip0/pwm0/duty_cycle"
+
+camera = cv2.VideoCapture(1)  # In my case 1 from: "/dev/video1"
 
 def gen_frames():  # generate frame by frame from camera
     while True:
@@ -25,6 +31,21 @@ def video_feed():
     return Response(gen_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/turn', methods=['POST'])
+def turn_camera():
+    direction = request.form.get('direction')
+    print("Direction: " + direction)
+    f = open(PWM_PATH, 'r+')
+    actual_position = int(f.read())
+    if direction == 'left' and actual_position < MAX:
+        actual_position += INCREMENT
+    elif direction == 'right' and actual_position > MIN:
+        actual_position -= INCREMENT
+    else:
+        f.close()
+        return "error: invalid argument"
+    f.write("{}".format(actual_position))
+    return "{}".format(actual_position)
 
 @app.route('/')
 def index():
