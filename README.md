@@ -36,12 +36,9 @@ net , buffer = cv2.imencode('.jpg', frame)
 buffer.tobytes()              
 ```   
 
- ### Credit
- Learn More about Streaming with flask
- - https://blog.miguelgrinberg.com/post/video-streaming-with-flask
-
 ## Servomotor with PWM
 ### Wiring diagram
 ![Wiring diagram](/img/wiring.jpg)
 #### Links
 - SG90 servo: http://www.ee.ic.ac.uk/pcheung/teaching/DE1_EE/stores/sg90_datasheet.pdf
+- Streaming with flask: https://blog.miguelgrinberg.com/post/video-streaming-with-flask
